@@ -1,0 +1,90 @@
+Log Ingestor:
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+import java.util.ArrayList;
+import java.util.List;
+
+class Log {
+    String level;
+    String message;
+    String resourceId;
+    String timestamp;
+    String traceId;
+    String spanId;
+    String commit;
+    Metadata metadata;
+
+    // getters and setters
+}
+
+class Metadata {
+    String parentResourceId;
+
+    // getter and setter
+}
+
+class LogIngestor {
+    private List<Log> logs = new ArrayList<>();
+
+    public void ingestLog(Log log) {
+        logs.add(log);
+        System.out.println("Log ingested successfully.");
+    }
+
+    public List<Log> getLogs() {
+        return logs;
+    }
+}
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+Query Interface (Console-based):
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+import java.util.List;
+import java.util.Scanner;
+
+public class LogQueryInterface {
+    private LogIngestor logIngestor;
+
+    public LogQueryInterface(LogIngestor logIngestor) {
+        this.logIngestor = logIngestor;
+    }
+
+    public void start() {
+        Scanner scanner = new Scanner(System.in);
+
+        while (true) {
+            System.out.println("Enter your query (or 'exit' to quit): ");
+            String query = scanner.nextLine();
+
+            if ("exit".equalsIgnoreCase(query)) {
+                break;
+            }
+
+            List<Log> results = executeQuery(query);
+            displayResults(results);
+        }
+
+        System.out.println("Exiting log query interface.");
+    }
+
+    private List<Log> executeQuery(String query) {
+        // Implement your query logic here
+        // For simplicity, return all logs
+        return logIngestor.getLogs();
+    }
+
+    private void displayResults(List<Log> results) {
+        if (results.isEmpty()) {
+            System.out.println("No matching logs found.");
+        } else {
+            System.out.println("Matching logs:");
+            for (Log log : results) {
+                System.out.println(log.toString());
+            }
+        }
+    }
+
+    public static void main(String[] args) {
+        LogIngestor logIngestor = new LogIngestor();
+        LogQueryInterface queryInterface = new LogQueryInterface(logIngestor);
+        queryInterface.start();
+    }
+}
